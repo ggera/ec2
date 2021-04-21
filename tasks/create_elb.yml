@@ -9,19 +9,19 @@
   security_group_ids: "{{ securitygroup_id }}"
   connection_draining_timeout: 60
   listeners:
-  - protocol: http
+    - protocol: http
   load_balancer_port: 80
   instance_port: 80
   health_check:
-  ping_protocol: http 
+  ping_protocol: http
   ping_port: 80
-  ping_path: "/" 
+  ping_path: "/"
   response_timeout: 5 # seconds
   interval: 30 # seconds
   unhealthy_threshold: 5
   healthy_threshold: 5
   tags: load_balancer
-  
+
 - name: create launch config
   ec2_lc:
   name: "{{ app_name }}"
@@ -32,7 +32,7 @@
   instance_type: "1"
   user_data: "{{ user_data }}"
   tags: launch_config
-  
+
 - name: create autoscale groups
   ec2_asg:
   name: "{{ app_name }}"
@@ -45,8 +45,8 @@
   vpc_zone_identifier: "{{ subnet_name }}"
   health_check_type: EC2
   health_check_period: 300
-  
-  
+
+
 - name: create scale down policy
   ec2_scaling_policy:
   state: present
@@ -59,7 +59,7 @@
   cooldown: 300
   register: scale_down_policy
   tags: scaling_policy
-  
+
 - name: create scale up policy
   ec2_scaling_policy:
   state: present

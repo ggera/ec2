@@ -7,10 +7,12 @@ ec2_bucket_policy.json{
       "Principal": "*",
       "Action": "s3:*",
       "Resource": [
-         "arn:aws:s3:::ec2bucket/*"
+        "arn:aws:s3:::ec2bucket/*"
       ],
       "Condition": {
-	 "IpAddress": {"aws:SourceIp": "10.240.125.0/24"}
+        "IpAddress": {
+          "aws:SourceIp": "10.240.125.0/24"
+        }
       }
     }
   ]

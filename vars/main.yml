@@ -1,24 +1,22 @@
 ---
 #APp related variabls
 app_name: "Gera_bestseller"
-# vars file for ec2
- 
+  # vars file for ec2
+
 aws_access_key: ""
 aws_secret_key: ""
-region: "us-east-2"
- 
+
 # VPC
-vpc_cidr: 10.10.0.0/24
+vpc_cidr: 10.10.0.0/20
 vpc_name: "ec2 VPC"
- 
+
 # Subnet
 subnet_name: "ec2 Subnet"
-subnet_cidr: 10.10.0.0/28
- 
+subnet_cidr: 10.10.0.0/24
+
 # Internet Gateway Name
 igw_name: "Traffic IGW"
- 
- 
+
 ec2_tag: "WebServer"
 #Acl
 acl_name: "ec2 ACL"
