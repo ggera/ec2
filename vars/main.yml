@@ -1,0 +1,31 @@
+---
+#APp related variabls
+app_name: "Gera_bestseller"
+# vars file for ec2
+ 
+aws_access_key: ""
+aws_secret_key: ""
+region: "us-east-2"
+ 
+# VPC
+vpc_cidr: 10.10.0.0/24
+vpc_name: "ec2 VPC"
+ 
+# Subnet
+subnet_name: "ec2 Subnet"
+subnet_cidr: 10.10.0.0/28
+ 
+# Internet Gateway Name
+igw_name: "Traffic IGW"
+ 
+ 
+ec2_tag: "WebServer"
+#Acl
+acl_name: "ec2 ACL"
+securitygroup_id: "ec2 Security Group"
+securitygroup_name: "ec2 Security Group"
+route_table_name: "ec2route table"
+state: 'present'
+#Region
+zone: 'eu-east-1a'
+region: 'eu-east-1'

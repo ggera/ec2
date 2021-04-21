@@ -1,0 +1,75 @@
+---
+# tasks file for ec2
+- name: launch load balancer
+  ec2_elb_lb:
+  name: "ec2 lb"
+  region: "{{ region }}"
+  state: present
+  subnets: "{{ subnet_name }}"
+  security_group_ids: "{{ securitygroup_id }}"
+  connection_draining_timeout: 60
+  listeners:
+  - protocol: http
+  load_balancer_port: 80
+  instance_port: 80
+  health_check:
+  ping_protocol: http 
+  ping_port: 80
+  ping_path: "/" 
+  response_timeout: 5 # seconds
+  interval: 30 # seconds
+  unhealthy_threshold: 5
+  healthy_threshold: 5
+  tags: load_balancer
+  
+- name: create launch config
+  ec2_lc:
+  name: "{{ app_name }}"
+  image_id: "{{ ami }}"
+  key_name: "{{ key_name }}"
+  region: "{{ region }}"
+  security_groups: "{{ app_security_group.group_id }},{{ tower_callback_client_group_id }},{{ tower_client_group_id }}"
+  instance_type: "1"
+  user_data: "{{ user_data }}"
+  tags: launch_config
+  
+- name: create autoscale groups
+  ec2_asg:
+  name: "{{ app_name }}"
+  load_balancers: "{{ app_name }}"
+  launch_config_name: "{{ app_name }}"
+  min_size: "1"
+  max_size: "3"
+  desired_capacity: "{{ desired_capacity }}"
+  region: "{{ region }}"
+  vpc_zone_identifier: "{{ subnet_name }}"
+  health_check_type: EC2
+  health_check_period: 300
+  
+  
+- name: create scale down policy
+  ec2_scaling_policy:
+  state: present
+  region: "{{ region }}"
+  name: scale-down-policy
+  adjustment_type: ChangeInCapacity
+  asg_name: "{{ app_name }}"
+  scaling_adjustment: -1
+  min_adjustment_step: -1
+  cooldown: 300
+  register: scale_down_policy
+  tags: scaling_policy
+  
+- name: create scale up policy
+  ec2_scaling_policy:
+  state: present
+  region: "{{ region }}"
+  name: scale-up-policy
+  adjustment_type: ChangeInCapacity
+  asg_name: "{{ app_name }}"
+  scaling_adjustment: 1
+  min_adjustment_step: 1
+  cooldown: 300
+  register: scale_up_policy
+  tags: scaling_policy
+  
