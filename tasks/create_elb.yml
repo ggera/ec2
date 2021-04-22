@@ -4,7 +4,7 @@
   ec2_elb_lb:
   name: "ec2 lb"
   region: "{{ region }}"
-  state: present
+  state: "{{ state }}"
   subnets: "{{ subnet_name }}"
   security_group_ids: "{{ securitygroup_id }}"
   connection_draining_timeout: 60
@@ -49,7 +49,7 @@
 
 - name: create scale out policy
   ec2_scaling_policy:
-  state: present
+  state: "{{ state }}"
   region: "{{ region }}"
   name: scale-in-policy
   adjustment_type: ChangeInCapacity
@@ -62,7 +62,7 @@
 
 - name: create scale in policy
   ec2_scaling_policy:
-  state: present
+  state: "{{ state }}"
   region: "{{ region }}"
   name: scale-up-policy
   adjustment_type: ChangeInCapacity
@@ -75,7 +75,7 @@
   
 - name: create scale out alarm
   ec2_metric_alarm:
-    state: present
+    state: "{{ state }}"
     region: "{{ region }}"
     name: "cpu-low"
     metric: CPUUtilization
@@ -95,7 +95,7 @@
 
 - name: create scale in alarm
   ec2_metric_alarm:
-    state: present
+    state: "{{ state }}"
     region: "{{ region }}"
     name: "cpu-high"
     metric: CPUUtilization

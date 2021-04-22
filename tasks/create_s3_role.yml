@@ -4,8 +4,8 @@
   s3_bucket:
     name: ec2bucket
     policy: "{{ lookup( 'file','ec2_bucket_policy.json' )}}"
-    state: present
-    region: us-east-2
+    state: "{{ state }}"
+    region: "{{ region }}"
     versioning: no
     tags:
       name: ec2bucket
