@@ -20,6 +20,7 @@ igw_name: "Traffic IGW"
 ec2_tag: "WebServer"
 #Acl
 acl_name: "ec2 ACL"
+elb_securitygroup_id: "ec2 Security Group"
 securitygroup_id: "ec2 Security Group"
 securitygroup_name: "ec2 Security Group"
 route_table_name: "ec2route table"
