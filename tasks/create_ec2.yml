@@ -13,4 +13,4 @@
     exact_count: 2
   register: ec2
 - name: install apache
-  raw: apt -y update && apt install -y apache2
+  raw: test -e apache2 -v  || (apt -y update && apt install -y apache2)
