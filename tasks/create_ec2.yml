@@ -1,0 +1,16 @@
+---
+# tasks file for ec2
+- name: Create EC2 server
+  ec2:
+    image: ami-467ca739
+    wait: yes
+    instance_type: t2.micro
+    region: "{{ region }}"
+    group_id: "{{ securitygroup_id}}"
+    vpc_subnet_id: "{{ subnet_id }}"
+    count_tag:
+      Name: webserver
+    exact_count: 2
+  register: ec2
+- name: install apache
+  raw: apt -y update && apt install -y apache2

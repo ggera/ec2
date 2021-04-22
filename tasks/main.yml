@@ -1,0 +1,6 @@
+---
+# tasks file for ec2
+- import_tasks: create_s3_role.yml
+- import_tasks: create_vpc_ec2.yml
+- import_tasks: create_ec2.yml
+- import_tasks: create_elb.yml

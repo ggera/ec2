@@ -1,0 +1,19 @@
+ec2_bucket_policy.json{
+  "Id": "S3PolicyAllowAllFromSourceIP",
+  "Statement": [
+    {
+      "Sid": "IPAllow",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:*",
+      "Resource": [
+        "arn:aws:s3:::ec2bucket/*"
+      ],
+      "Condition": {
+        "IpAddress": {
+          "aws:SourceIp": "10.240.125.0/24"
+        }
+      }
+    }
+  ]
+}
