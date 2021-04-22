@@ -47,7 +47,7 @@
   health_check_period: 300
 
 
-- name: create scale in policy
+- name: create scale out policy
   ec2_scaling_policy:
   state: present
   region: "{{ region }}"
@@ -60,7 +60,7 @@
   register: scale_in_policy
   tags: scaling_policy
 
-- name: create scale out policy
+- name: create scale in policy
   ec2_scaling_policy:
   state: present
   region: "{{ region }}"
@@ -72,4 +72,43 @@
   cooldown: 300
   register: scale_out_policy
   tags: scaling_policy
+  
+- name: create scale out alarm
+  ec2_metric_alarm:
+    state: present
+    region: "{{ region }}"
+    name: "cpu-low"
+    metric: CPUUtilization
+    namespace: "AWS/EC2"
+    statistic: Average
+    comparison: "<="
+    threshold: 60.0
+    period: 300
+    evaluation_periods: 3
+    unit: "Percent"
+    description: "Alarm when cpu usage average is lower than 60% for 15 minutes "
+    dimensions:
+      AutoScalingGroupName: "{{ app_name }}"
+    alarm_actions:
+      - "{{ scale_down_policy.arn }}"
+  tags: alarm
+
+- name: create scale in alarm
+  ec2_metric_alarm:
+    state: present
+    region: "{{ region }}"
+    name: "cpu-high"
+    metric: CPUUtilization
+    namespace: "AWS/EC2"
+    statistic: Average
+    comparison: ">="
+    threshold: 80.0
+    period: 300
+    evaluation_periods: 3
+    unit: "Percent"
+    description: "Alarm when cpu usage average is higher than 80% for 15 minutes "
+    dimensions:
+      AutoScalingGroupName: "{{ app_name }}"
+    alarm_actions:
+      - "{{ scale_in_policy.arn }}"
   
