@@ -47,20 +47,20 @@
   health_check_period: 300
 
 
-- name: create scale down policy
+- name: create scale in policy
   ec2_scaling_policy:
   state: present
   region: "{{ region }}"
-  name: scale-down-policy
+  name: scale-in-policy
   adjustment_type: ChangeInCapacity
   asg_name: "{{ app_name }}"
   scaling_adjustment: -1
   min_adjustment_step: -1
   cooldown: 300
-  register: scale_down_policy
+  register: scale_in_policy
   tags: scaling_policy
 
-- name: create scale up policy
+- name: create scale out policy
   ec2_scaling_policy:
   state: present
   region: "{{ region }}"
@@ -70,6 +70,6 @@
   scaling_adjustment: 1
   min_adjustment_step: 1
   cooldown: 300
-  register: scale_up_policy
+  register: scale_out_policy
   tags: scaling_policy
   
